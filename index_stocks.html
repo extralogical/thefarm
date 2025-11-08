@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Futures Trading R-Multiple Calculator</title>
+    <title>Stock Trading R-Multiple Calculator</title>
     <style>
         * {
             margin: 0;
@@ -19,7 +19,7 @@
         }
 
         .container {
-            max-width: 1400px;
+            max-width: 1200px;
             margin: 0 auto;
         }
 
@@ -72,8 +72,7 @@
             font-size: 0.95em;
         }
 
-        input[type="number"],
-        select {
+        input[type="number"] {
             width: 100%;
             padding: 12px;
             border: 2px solid #e0e0e0;
@@ -82,8 +81,7 @@
             transition: border-color 0.3s;
         }
 
-        input[type="number"]:focus,
-        select:focus {
+        input[type="number"]:focus {
             outline: none;
             border-color: #667eea;
         }
@@ -91,11 +89,6 @@
         input[type="number"]:read-only {
             background: #f5f5f5;
             cursor: not-allowed;
-        }
-
-        select {
-            background: white;
-            cursor: pointer;
         }
 
         .button-group {
@@ -353,133 +346,59 @@
             display: block;
             margin-top: 5px;
         }
-
-        .preset-selector {
-            background: #fff7ed;
-            padding: 15px;
-            border-radius: 8px;
-            border: 2px solid #fb923c;
-            margin-bottom: 20px;
-        }
-
-        .preset-selector label {
-            color: #c2410c;
-        }
-
-        .two-column {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-        }
-
-        @media (max-width: 768px) {
-            .two-column {
-                grid-template-columns: 1fr;
-            }
-        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>📊 Futures R-Multiple Calculator</h1>
-        <p class="subtitle">Professional Position Sizing for Futures Trading</p>
+        <h1>📈 R-Multiple Calculator</h1>
+        <p class="subtitle">Measure Your Trading Performance Against Initial Risk</p>
 
         <div class="main-content">
             <!-- Single Trade Calculator -->
             <div class="card">
-                <h2>Futures Trade Calculator</h2>
+                <h2>Single Trade Calculator</h2>
                 
                 <div class="info-text">
-                    <strong>R-Multiple for Futures:</strong><br>
-                    (Exit Price - Entry Price) × Point Value × Contracts ÷ Initial Risk
+                    <strong>R-Multiple Formula:</strong><br>
+                    (Exit Price - Entry Price) / (Entry Price - Stop Loss)
                 </div>
 
                 <form id="tradeForm">
-                    <!-- Contract Preset Selection -->
-                    <div class="form-group preset-selector">
-                        <label for="contractPreset">Contract Preset (Optional)</label>
-                        <select id="contractPreset">
-                            <option value="">-- Select a Preset --</option>
-                            <option value="es">E-mini S&P 500 (ES)</option>
-                            <option value="nq">E-mini Nasdaq 100 (NQ)</option>
-                            <option value="ym">E-mini Dow (YM)</option>
-                            <option value="rty">E-mini Russell 2000 (RTY)</option>
-                            <option value="cl">Crude Oil (CL)</option>
-                            <option value="gc">Gold (GC)</option>
-                            <option value="ng">Natural Gas (NG)</option>
-                            <option value="zb">30-Year T-Bond (ZB)</option>
-                            <option value="6e">Euro FX (6E)</option>
-                            <option value="mes">Micro E-mini S&P 500 (MES)</option>
-                            <option value="mnq">Micro E-mini Nasdaq 100 (MNQ)</option>
-                            <option value="custom">Custom Contract</option>
-                        </select>
-                        <small>Or enter custom contract details below</small>
-                    </div>
-
-                    <!-- Account & Risk Settings -->
                     <div class="form-group">
-                        <label for="accountSize">Account Size ($)</label>
-                        <input type="number" id="accountSize" step="0.01" value="25000">
+                        <label for="portfolioValue">Portfolio Value ($)</label>
+                        <input type="number" id="portfolioValue" step="0.01" value="10000">
                     </div>
 
                     <div class="form-group">
                         <label for="riskPercentage">Risk Per Trade (%)</label>
                         <input type="number" id="riskPercentage" step="0.1" value="2" min="0.1" max="100">
-                        <small>Recommended: 1-2% for futures</small>
-                    </div>
-
-                    <!-- Contract Specifications -->
-                    <div class="two-column">
-                        <div class="form-group">
-                            <label for="pointValue">Point Value ($)</label>
-                            <input type="number" id="pointValue" step="0.01" placeholder="50.00">
-                            <small>$ per full point move</small>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="tickSize">Tick Size</label>
-                            <input type="number" id="tickSize" step="0.0001" placeholder="0.25">
-                            <small>Minimum price increment</small>
-                        </div>
-                    </div>
-
-                    <!-- Trade Entry -->
-                    <div class="form-group">
-                        <label for="entryPrice">Entry Price</label>
-                        <input type="number" id="entryPrice" step="any" placeholder="4500.00">
+                        <small>Recommended: 1-2% of portfolio</small>
                     </div>
 
                     <div class="form-group">
-                        <label for="stopLossTicks">Stop Loss (in ticks)</label>
-                        <input type="number" id="stopLossTicks" step="1" placeholder="20">
-                        <small>How many ticks away from entry</small>
+                        <label for="entryPrice">Entry Price ($)</label>
+                        <input type="number" id="entryPrice" step="0.01" placeholder="100.00">
                     </div>
 
-                    <!-- Calculated Fields -->
-                    <div class="form-group calculated-field">
-                        <label for="stopLossPrice">Calculated Stop Loss Price</label>
-                        <input type="number" id="stopLossPrice" step="any" placeholder="Auto-calculated" readonly>
-                    </div>
-
-                    <div class="form-group calculated-field">
-                        <label for="riskPerContract">Risk Per Contract ($)</label>
-                        <input type="number" id="riskPerContract" step="0.01" placeholder="Auto-calculated" readonly>
-                    </div>
-
-                    <div class="form-group calculated-field">
-                        <label for="numContracts">Number of Contracts</label>
-                        <input type="number" id="numContracts" placeholder="Auto-calculated" readonly>
-                    </div>
-
-                    <div class="form-group calculated-field">
-                        <label for="totalRiskDollars">Total Risk ($)</label>
-                        <input type="number" id="totalRiskDollars" step="0.01" placeholder="Auto-calculated" readonly>
-                    </div>
-
-                    <!-- Exit Price -->
                     <div class="form-group">
-                        <label for="exitPrice">Exit Price</label>
-                        <input type="number" id="exitPrice" step="any" placeholder="4550.00">
+                        <label for="stopLossPercentage">Stop Loss Distance (%)</label>
+                        <input type="number" id="stopLossPercentage" step="0.1" value="5" min="0.1">
+                        <small>How far below entry price (e.g., 5% = stop at 95% of entry)</small>
+                    </div>
+
+                    <div class="form-group calculated-field">
+                        <label for="stopLoss">Calculated Stop Loss ($)</label>
+                        <input type="number" id="stopLoss" step="0.01" placeholder="Auto-calculated" readonly>
+                    </div>
+
+                    <div class="form-group calculated-field">
+                        <label for="positionSize">Calculated Position Size (shares)</label>
+                        <input type="number" id="positionSize" placeholder="Auto-calculated" readonly>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="exitPrice">Exit Price ($)</label>
+                        <input type="number" id="exitPrice" step="0.01" placeholder="110.00">
                     </div>
 
                     <div class="button-group">
@@ -497,20 +416,20 @@
 
                     <div id="resultBox" class="result-box">
                         <div class="result-row">
-                            <span class="result-label">Points Gained/Lost:</span>
-                            <span class="result-value" id="pointsGained">0.00</span>
+                            <span class="result-label">Initial Risk per Share:</span>
+                            <span class="result-value" id="riskPerShare">$0.00</span>
                         </div>
                         <div class="result-row">
-                            <span class="result-label">P/L Per Contract:</span>
-                            <span class="result-value" id="plPerContract">$0.00</span>
+                            <span class="result-label">Total Initial Risk:</span>
+                            <span class="result-value" id="totalRisk">$0.00</span>
+                        </div>
+                        <div class="result-row">
+                            <span class="result-label">P/L per Share:</span>
+                            <span class="result-value" id="plPerShare">$0.00</span>
                         </div>
                         <div class="result-row">
                             <span class="result-label">Total P/L:</span>
                             <span class="result-value" id="totalPL">$0.00</span>
-                        </div>
-                        <div class="result-row">
-                            <span class="result-label">Return on Account:</span>
-                            <span class="result-value" id="returnOnAccount">0.00%</span>
                         </div>
                     </div>
 
@@ -562,149 +481,113 @@
         let portfolio = [];
         let currentTrade = null;
 
-        // Contract presets
-        const contractPresets = {
-            'es': { name: 'E-mini S&P 500', pointValue: 50, tickSize: 0.25 },
-            'nq': { name: 'E-mini Nasdaq 100', pointValue: 20, tickSize: 0.25 },
-            'ym': { name: 'E-mini Dow', pointValue: 5, tickSize: 1.0 },
-            'rty': { name: 'E-mini Russell 2000', pointValue: 50, tickSize: 0.1 },
-            'cl': { name: 'Crude Oil', pointValue: 1000, tickSize: 0.01 },
-            'gc': { name: 'Gold', pointValue: 100, tickSize: 0.1 },
-            'ng': { name: 'Natural Gas', pointValue: 10000, tickSize: 0.001 },
-            'zb': { name: '30-Year T-Bond', pointValue: 1000, tickSize: 0.03125 },
-            '6e': { name: 'Euro FX', pointValue: 125000, tickSize: 0.00005 },
-            'mes': { name: 'Micro E-mini S&P 500', pointValue: 5, tickSize: 0.25 },
-            'mnq': { name: 'Micro E-mini Nasdaq 100', pointValue: 2, tickSize: 0.25 }
-        };
-
-        // Handle preset selection
-        document.getElementById('contractPreset').addEventListener('change', function() {
-            const preset = this.value;
-            if (preset && preset !== 'custom' && contractPresets[preset]) {
-                document.getElementById('pointValue').value = contractPresets[preset].pointValue;
-                document.getElementById('tickSize').value = contractPresets[preset].tickSize;
-                autoCalculate();
-            }
-        });
-
-        // Auto-calculate function
+        // Auto-calculate stop loss and position size
         function autoCalculate() {
-            const accountSize = parseFloat(document.getElementById('accountSize').value) || 0;
+            const portfolioValue = parseFloat(document.getElementById('portfolioValue').value) || 0;
             const riskPercentage = parseFloat(document.getElementById('riskPercentage').value) || 0;
-            const pointValue = parseFloat(document.getElementById('pointValue').value) || 0;
-            const tickSize = parseFloat(document.getElementById('tickSize').value) || 0;
             const entryPrice = parseFloat(document.getElementById('entryPrice').value) || 0;
-            const stopLossTicks = parseFloat(document.getElementById('stopLossTicks').value) || 0;
+            const stopLossPercentage = parseFloat(document.getElementById('stopLossPercentage').value) || 0;
 
-            if (accountSize > 0 && riskPercentage > 0 && pointValue > 0 && tickSize > 0 && entryPrice > 0 && stopLossTicks > 0) {
+            if (portfolioValue > 0 && riskPercentage > 0 && entryPrice > 0 && stopLossPercentage > 0) {
                 // Calculate stop loss price
-                const stopLossPoints = stopLossTicks * tickSize;
-                const stopLossPrice = entryPrice - stopLossPoints;
-                document.getElementById('stopLossPrice').value = stopLossPrice.toFixed(4);
+                const stopLoss = entryPrice * (1 - stopLossPercentage / 100);
+                document.getElementById('stopLoss').value = stopLoss.toFixed(2);
 
-                // Calculate risk per contract
-                const tickValue = pointValue * tickSize;
-                const riskPerContract = stopLossTicks * tickValue;
-                document.getElementById('riskPerContract').value = riskPerContract.toFixed(2);
+                // Calculate dollar risk per trade
+                const dollarRisk = portfolioValue * (riskPercentage / 100);
 
-                // Calculate number of contracts
-                const dollarRisk = accountSize * (riskPercentage / 100);
-                const numContracts = Math.floor(dollarRisk / riskPerContract);
-                document.getElementById('numContracts').value = numContracts > 0 ? numContracts : 0;
+                // Calculate risk per share
+                const riskPerShare = entryPrice - stopLoss;
 
-                // Calculate total risk
-                const totalRisk = numContracts * riskPerContract;
-                document.getElementById('totalRiskDollars').value = totalRisk.toFixed(2);
+                // Calculate position size
+                const positionSize = Math.floor(dollarRisk / riskPerShare);
+                document.getElementById('positionSize').value = positionSize > 0 ? positionSize : 0;
             } else {
-                document.getElementById('stopLossPrice').value = '';
-                document.getElementById('riskPerContract').value = '';
-                document.getElementById('numContracts').value = '';
-                document.getElementById('totalRiskDollars').value = '';
+                document.getElementById('stopLoss').value = '';
+                document.getElementById('positionSize').value = '';
             }
         }
 
-        // Add event listeners for auto-calculation
-        ['accountSize', 'riskPercentage', 'pointValue', 'tickSize', 'entryPrice', 'stopLossTicks'].forEach(id => {
-            document.getElementById(id).addEventListener('input', autoCalculate);
-        });
+        // Add event listeners
+        document.getElementById('portfolioValue').addEventListener('input', autoCalculate);
+        document.getElementById('riskPercentage').addEventListener('input', autoCalculate);
+        document.getElementById('entryPrice').addEventListener('input', autoCalculate);
+        document.getElementById('stopLossPercentage').addEventListener('input', autoCalculate);
 
         // Form submission
         document.getElementById('tradeForm').addEventListener('submit', function(e) {
             e.preventDefault();
+            console.log('Form submitted!');
             calculateRMultiple();
         });
 
         function calculateRMultiple() {
-            const accountSize = parseFloat(document.getElementById('accountSize').value);
-            const pointValue = parseFloat(document.getElementById('pointValue').value);
-            const tickSize = parseFloat(document.getElementById('tickSize').value);
-            const entryPrice = parseFloat(document.getElementById('entryPrice').value);
-            const stopLossPrice = parseFloat(document.getElementById('stopLossPrice').value);
-            const exitPrice = parseFloat(document.getElementById('exitPrice').value);
-            const numContracts = parseInt(document.getElementById('numContracts').value);
-            const riskPerContract = parseFloat(document.getElementById('riskPerContract').value);
+            console.log('calculateRMultiple called');
+            
+            const entry = parseFloat(document.getElementById('entryPrice').value);
+            const stop = parseFloat(document.getElementById('stopLoss').value);
+            const exit = parseFloat(document.getElementById('exitPrice').value);
+            const position = parseInt(document.getElementById('positionSize').value);
+
+            console.log('Values:', { entry, stop, exit, position });
 
             // Validation
-            if (!accountSize || isNaN(accountSize)) {
-                alert('Please enter an account size!');
-                return;
-            }
-
-            if (!pointValue || isNaN(pointValue)) {
-                alert('Please enter a point value!');
-                return;
-            }
-
-            if (!entryPrice || isNaN(entryPrice)) {
+            if (!entry || isNaN(entry)) {
                 alert('Please enter an entry price!');
                 return;
             }
 
-            if (!exitPrice || isNaN(exitPrice)) {
+            if (!stop || isNaN(stop)) {
+                alert('Stop loss not calculated. Please enter valid portfolio and entry values.');
+                return;
+            }
+
+            if (!exit || isNaN(exit)) {
                 alert('Please enter an exit price!');
                 return;
             }
 
-            if (!numContracts || isNaN(numContracts) || numContracts <= 0) {
-                alert('Number of contracts must be greater than 0. Check your risk settings.');
+            if (!position || isNaN(position) || position <= 0) {
+                alert('Position size must be greater than 0. Check your portfolio value and risk settings.');
                 return;
             }
 
-            // Calculate P/L
-            const pointsGained = exitPrice - entryPrice;
-            const plPerContract = pointsGained * pointValue;
-            const totalPL = plPerContract * numContracts;
-            const returnOnAccount = (totalPL / accountSize) * 100;
+            if (entry === stop) {
+                alert('Entry price cannot equal stop loss!');
+                return;
+            }
 
             // Calculate R-multiple
-            const totalRisk = riskPerContract * numContracts;
-            const rMultiple = totalPL / totalRisk;
+            const initialRisk = Math.abs(entry - stop);
+            const profitLoss = exit - entry;
+            const rMultiple = profitLoss / initialRisk;
+            const totalRisk = initialRisk * position;
+            const totalPL = profitLoss * position;
+
+            console.log('Calculated:', { rMultiple, totalPL });
 
             currentTrade = {
-                accountSize: accountSize,
-                entryPrice: entryPrice,
-                stopLossPrice: stopLossPrice,
-                exitPrice: exitPrice,
-                numContracts: numContracts,
-                pointValue: pointValue,
+                entry: entry,
+                stop: stop,
+                exit: exit,
+                position: position,
                 rMultiple: rMultiple,
-                totalPL: totalPL,
-                pointsGained: pointsGained
+                totalPL: totalPL
             };
 
-            displayResults(rMultiple, pointsGained, plPerContract, totalPL, returnOnAccount);
+            displayResults(rMultiple, initialRisk, totalRisk, profitLoss, totalPL);
         }
 
-        function displayResults(rMultiple, pointsGained, plPerContract, totalPL, returnOnAccount) {
+        function displayResults(rMultiple, riskPerShare, totalRisk, plPerShare, totalPL) {
             document.getElementById('results').classList.add('show');
             
             const resultBox = document.getElementById('resultBox');
             
             document.getElementById('rMultipleValue').textContent = rMultiple.toFixed(2) + 'R';
-            document.getElementById('pointsGained').textContent = pointsGained.toFixed(2) + ' pts';
-            document.getElementById('plPerContract').textContent = '$' + plPerContract.toFixed(2);
+            document.getElementById('riskPerShare').textContent = '$' + riskPerShare.toFixed(2);
+            document.getElementById('totalRisk').textContent = '$' + totalRisk.toFixed(2);
+            document.getElementById('plPerShare').textContent = '$' + plPerShare.toFixed(2);
             document.getElementById('totalPL').textContent = '$' + totalPL.toFixed(2);
-            document.getElementById('returnOnAccount').textContent = returnOnAccount.toFixed(2) + '%';
 
             if (rMultiple > 0) {
                 resultBox.className = 'result-box positive';
@@ -721,6 +604,7 @@
             portfolio.push(currentTrade);
             updatePortfolio();
             
+            // Show success feedback
             const btn = event.target;
             const originalText = btn.textContent;
             btn.textContent = '✓ Added!';
@@ -741,6 +625,7 @@
             document.getElementById('emptyState').style.display = 'none';
             document.getElementById('portfolioContent').style.display = 'block';
 
+            // Calculate statistics
             const totalTrades = portfolio.length;
             const winningTrades = portfolio.filter(t => t.rMultiple > 0).length;
             const winRate = (winningTrades / totalTrades * 100).toFixed(1);
@@ -752,6 +637,7 @@
             document.getElementById('totalR').textContent = totalR.toFixed(2) + 'R';
             document.getElementById('avgR').textContent = avgR.toFixed(2) + 'R';
 
+            // Update trade list
             const tradeList = document.getElementById('tradeList');
             tradeList.innerHTML = '';
             
@@ -763,10 +649,10 @@
                     <div class="trade-info">
                         <div><strong>Trade ${index + 1}</strong></div>
                         <div style="font-size: 0.9em; color: #666; margin-top: 5px;">
-                            Entry: ${trade.entryPrice.toFixed(2)} | Stop: ${trade.stopLossPrice.toFixed(2)} | Exit: ${trade.exitPrice.toFixed(2)}
+                            Entry: $${trade.entry.toFixed(2)} | Stop: $${trade.stop.toFixed(2)} | Exit: $${trade.exit.toFixed(2)}
                         </div>
                         <div style="font-size: 0.9em; color: #666;">
-                            Contracts: ${trade.numContracts} | P/L: $${trade.totalPL.toFixed(2)} | Points: ${trade.pointsGained.toFixed(2)}
+                            Position: ${trade.position} shares | P/L: $${trade.totalPL.toFixed(2)}
                         </div>
                     </div>
                     <div class="trade-r ${trade.rMultiple > 0 ? 'positive' : 'negative'}">
@@ -794,12 +680,11 @@
         function resetForm() {
             document.getElementById('tradeForm').reset();
             document.getElementById('results').classList.remove('show');
-            document.getElementById('accountSize').value = 25000;
+            document.getElementById('portfolioValue').value = 10000;
             document.getElementById('riskPercentage').value = 2;
-            document.getElementById('stopLossPrice').value = '';
-            document.getElementById('riskPerContract').value = '';
-            document.getElementById('numContracts').value = '';
-            document.getElementById('totalRiskDollars').value = '';
+            document.getElementById('stopLossPercentage').value = 5;
+            document.getElementById('stopLoss').value = '';
+            document.getElementById('positionSize').value = '';
             currentTrade = null;
         }
 
